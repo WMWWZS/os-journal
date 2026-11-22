@@ -38,13 +38,13 @@
 | 目录 | 用途 | 现有 |
 |:---:|---|---:|
 | [`docs/`](docs/) | 系统化知识笔记：内核边界 · 进程线程 · 调度 · 虚拟内存 · 物理内存 · 文件系统 · 同步 · IPC · I/O · 观测 | 11 篇 |
-| [`labs/`](labs/) | 能编译、能测出数字的实验，一个机制一个实验 | 1 个 |
+| [`labs/`](labs/) | 能编译、能测出数字的实验，一个机制一个实验 | 2 个 |
 | [`notes/`](notes/) | 观测与排查的随手记录，不成体系 | 模板 |
 | [`TASKS.md`](TASKS.md) | 12 周任务清单，勾掉一个才算学完一个 | — |
 | [`tools/`](tools/) | 进度脚本 + 环境检查 | 2 个 |
 | [`resources.md`](resources.md) | 书单、工具、公开课程，以及安全与授权边界 | 清单 |
 
-> **第一次来？** 先读 [`docs/00-roadmap.md`](docs/00-roadmap.md) 看 12 周路线，跑一遍 [`labs/01-syscall-cost`](labs/01-syscall-cost/)，再用 [`notes/_TEMPLATE.md`](notes/_TEMPLATE.md) 写下第一条观测记录。
+> **第一次来？** 先读 [`docs/00-roadmap.md`](docs/00-roadmap.md) 看 12 周路线，跑一遍 [`labs/01-syscall-cost`](labs/01-syscall-cost/) 和 [`labs/02-address-space-probe`](labs/02-address-space-probe/)，再用 [`notes/_TEMPLATE.md`](notes/_TEMPLATE.md) 写下第一条观测记录。
 
 ## ▍ 一次 read 的路径
 
@@ -73,21 +73,21 @@ flowchart TD
 
 ```text
 $ powershell -ExecutionPolicy Bypass -File tools/status.ps1
-phase   topic                               deliverable       state
-01-02   kernel-boundary / syscall           01-syscall-cost   done
-03-04   process-thread / sched              -                 todo
-05-06   virt-mem / phys-mem                 -                 todo
-07-08   fs / io                             -                 todo
-09-10   sync / ipc                          -                 todo
-11-12   observability / lab                 -                 todo
+phase   topic                               deliverable            state
+01-02   kernel-boundary / syscall           01-syscall-cost        done
+03-04   process-thread / sched              02-address-space-probe done
+05-06   virt-mem / phys-mem                 -                      todo
+07-08   fs / io                             -                      todo
+09-10   sync / ipc                          -                      todo
+11-12   observability / lab                 -                      todo
 ------------------------------------------------------------------------------
-summary  docs 11/11   labs 1/1   notes 0
+summary  docs 11/11   labs 2/2   notes 1
 ```
 
 | 周次 | 主题 | 产出 | 状态 |
 |:---:|---|---|:---:|
 | 1–2 | 内核边界与系统调用 | [`labs/01-syscall-cost`](labs/01-syscall-cost/) ✅ | 🟡 进行中 |
-| 3–4 | 进程、线程与调度 | 一次上下文切换的实测与归因 | ⬜ 未开始 |
+| 3–4 | 进程、线程与调度 | [`labs/02-address-space-probe`](labs/02-address-space-probe/) ✅ · 一次上下文切换的实测与归因 | 🟡 进行中 |
 | 5–6 | 虚拟内存与物理内存 | 页表走查 + 缺页开销实测 | ⬜ 未开始 |
 | 7–8 | 文件系统与 I/O | 读放大与 page cache 命中率实测 | ⬜ 未开始 |
 | 9–10 | 并发、同步与 IPC | 一把锁的争用曲线 | ⬜ 未开始 |
@@ -113,6 +113,27 @@ flowchart LR
     C["文件与 I/O<br>VFS · page cache"] --> E
     D["并发与同步<br>锁 · 内存序"] --> E
 ```
+
+## ▍ 姊妹仓库
+
+同一批实验，三种视角，证据是同一份：
+
+| 仓库 | 讲什么 | 和这里的关系 |
+|---|---|---|
+| **os-journal**（本仓库） | 操作系统原理：内核边界 · 调度 · 虚拟内存 · 文件与 I/O · 同步 · 观测 | 从**原理**看：这个数字为什么是这样 |
+| [reversing-journal](https://github.com/WMWWZS/reversing-journal) | 逆向主线：内存布局 · 汇编 · 栈帧 · PE · 工具 · 引擎 · 反作弊 | 从**对面**看：同一份证据反过来读别人的程序 |
+| [network-journal](https://github.com/WMWWZS/network-journal) | 网络通信原理：分层 · TCP 状态机 · TLS · DNS · 私有协议 · 抓包 | 往**上一层**看：syscall 发出去的字节到了网上是什么样 |
+
+```mermaid
+flowchart LR
+    OS["os-journal<br>原理 · 测量"]
+    OS -->|同一份 evidence| RJ["reversing-journal<br>逆向 · 还原"]
+    OS --> NET["network-journal<br>协议 · 抓包"]
+```
+
+OS 这一块的逆向版在 `reversing-journal` 的 `docs/14-operating-system.md` + `labs/07-net-os/os/`：
+它和本仓库 [`labs/02-address-space-probe`](labs/02-address-space-probe/) 用的是**同一份 evidence**（同一台机器、同一次开机录的）。
+同一个问题两边问法不同——这里问「这个数字为什么是这样」，那边问「这段代码为什么会长成这样」。
 
 ## ▍ 原则
 

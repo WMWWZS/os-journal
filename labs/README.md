@@ -10,6 +10,7 @@
 lab-name/
 ├── README.md      # 目的、原理、真实输出、自测题
 ├── build.ps1      # 一键构建（Windows + MinGW）
+├── run.ps1        # 可选：多轮对照 + 落 evidence/（需要多份证据时才有）
 ├── *.c / *.h      # 源码，只用 Windows API，不引入第三方库
 └── *.c            # 可选：对照程序
 ```
@@ -25,7 +26,7 @@ lab-name/
 | 编号 | 实验 | 对应笔记 | 状态 |
 |:---:|---|---|:---:|
 | 01 | 系统调用与内核路径成本 | [01 · 内核边界](../docs/01-kernel-boundary.md) | ✅ 完成 |
-| 02 | 进程/线程创建与调度观测 | [02 · 进程与线程](../docs/02-process-and-thread.md) | ⬜ 待做 |
+| 02 | 进程地址空间探测：地址空间分区 · ASLR · TEB 栈 · 句柄 · syscall | [02 · 进程与线程](../docs/02-process-and-thread.md)、[04 · 虚拟内存](../docs/04-virtual-memory.md) | ✅ 完成 |
 | 03 | 缺页与工作集追踪 | [04 · 虚拟内存](../docs/04-virtual-memory.md) | ⬜ 待做 |
 | 04 | 物理内存与池泄漏趋势 | [05 · 物理内存](../docs/05-physical-memory.md) | ⬜ 待做 |
 | 05 | 文件读写的缓存 vs 直写 | [06 · 文件系统](../docs/06-file-system.md) | ⬜ 待做 |

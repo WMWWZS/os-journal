@@ -225,4 +225,5 @@ vmstat -s | head           # 缺页统计
 - 物理内存怎么管：[`05 · 物理内存`](./05-physical-memory.md)
 - 边界与 syscall：[`01 · 内核边界`](./01-kernel-boundary.md)
 - 实验：[`labs/01-syscall-cost`](../labs/01-syscall-cost/)
+- 实验：[`labs/02-address-space-probe`](../labs/02-address-space-probe/)：地址空间分区、ASLR 三条实测结论、栈的按需增长
 - 观测工具：[`10 · 内核观测`](./10-kernel-observability.md)

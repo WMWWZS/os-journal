@@ -176,7 +176,7 @@ cat /proc/<pid>/task/<tid>/stat
 2. **以为「进程的 CPU 占用」是进程自己算的**。CPU 时间记在**线程**上，进程的数字是句柄表里所有线程的加总；线程可以被跨进程打开，句柄数也不等于「对象数」。
 3. **以为上下文切换成本固定**。同进程线程切换不换 `CR3`；跨进程切换要换页表、可能污染 TLB；如果目标线程内核栈被换出，还要多一次 `Transition` 等待。
 4. **以为 `fork` 很贵**。写时复制让它看起来便宜，但「`fork` 完立刻 `exec`」等于把复制的页表全扔掉——这正是 `posix_spawn` / `vfork` 存在的理由。
-5. **以为 `TEB` 是内核结构**。`TEB` 在用户态，`fs:[0]` 就能读；`EPROCESS`/`KTHREAD` 才在内核，用户态只能通过 syscall 间接看到。
+5. **以为 `TEB` 是内核结构**。`TEB` 在用户态，x64 下 `gs:[0]`、x86 下 `fs:[0]` 就能读（`labs/02` 就是从 `gs:0x08`/`gs:0x10` 读栈范围的）；`EPROCESS`/`KTHREAD` 才在内核，用户态只能通过 syscall 间接看到。
 
 ## 自测
 
@@ -204,3 +204,4 @@ cat /proc/<pid>/task/<tid>/stat
 - 边界与 syscall：[`01 · 内核边界`](./01-kernel-boundary.md)
 - 进程的地址空间：[`04 · 虚拟内存`](./04-virtual-memory.md)
 - 实验：[`labs/01-syscall-cost`](../labs/01-syscall-cost/)
+- 实验：[`labs/02-address-space-probe`](../labs/02-address-space-probe/)：TEB 里读线程栈、进程内线程列表、句柄表

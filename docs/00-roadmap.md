@@ -43,7 +43,7 @@ flowchart LR
 | 阶段 | 周次 | 主题 | 产出 |
 |:---:|:---:|---|---|
 | 1 | 1–2 | 内核边界与系统调用（含中断/异常） | [`labs/01-syscall-cost`](../labs/01-syscall-cost/) |
-| 2 | 3–4 | 进程与线程 + 调度 | 进程/线程开销实测 |
+| 2 | 3–4 | 进程与线程 + 调度 | [`labs/02-address-space-probe`](../labs/02-address-space-probe/) |
 | 3 | 5–6 | 虚拟内存与物理内存 | 缺页与内存增长分析 |
 | 4 | 7–8 | 文件系统 + I/O 与设备 | 一次读路径的分层计时 |
 | 5 | 9–10 | 同步与并发 + IPC | 锁竞争与竞态实验 |
@@ -67,7 +67,7 @@ flowchart LR
 - 上下文切换到底保存了什么
 - CFS 的 vruntime；Windows 的 32 级优先级与时间片
 
-**产出**：用 `Get-Process` + 计数器解释一次「线程变多但 CPU 没满」的现象。
+**产出**：[`labs/02-address-space-probe`](../labs/02-address-space-probe/) —— 地址空间分区、ASLR 三条实测结论、TEB 里的线程栈、句柄表、syscall 的内核时间；再用 `Get-Process` + 计数器解释一次「线程变多但 CPU 没满」的现象。
 
 **读完必须能答**：上下文切换 2 µs 的代价由哪些部分组成？为什么线程不是「更轻的进程」这么简单？
 
@@ -229,5 +229,6 @@ available memory   : 1,328 MB
 
 - 第一站：[`01 · 内核边界`](./01-kernel-boundary.md)
 - 第一个实验：[`labs/01-syscall-cost`](../labs/01-syscall-cost/)
+- 第二个实验：[`labs/02-address-space-probe`](../labs/02-address-space-probe/)
 - 记录模板：[`notes/_TEMPLATE.md`](../notes/_TEMPLATE.md)
 - 任务清单：[`TASKS.md`](../TASKS.md)
